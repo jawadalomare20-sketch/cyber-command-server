@@ -33,6 +33,9 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 # حالة الصيانة العامة للسيرفر
 system_maintenance_mode = False
 
+# المفتاح السري الخاص بالأدمن (يمكنك تغييره إلى أي كلمة سر قوية تريدها)
+ADMIN_SECRET_KEY = "MY_SUPER_SECRET_KEY"
+
 class HackAttemptData(BaseModel):
     difficulty: Optional[str] = "easy"
     time_taken: Optional[float] = 0.0
@@ -321,15 +324,20 @@ def get_admin_stats():
     
     return JSONResponse(content={"agents": agents_data, "logs": logs_data, "stats": stats_summary})
 
-@app.get("/admin/dashboard", response_class=HTMLResponse)
-def admin_dashboard():
+@app.get("/admin/{secret_key}/dashboard", response_class=HTMLResponse)
+def admin_dashboard(secret_key: str):
+    if secret_key != ADMIN_SECRET_KEY:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, 
+            detail="Access Denied: Invalid Admin Secret Key!"
+        )
     try:
         with open("admin.html", "r", encoding="utf-8") as f:
             return f.read()
     except FileNotFoundError:
         return "<h3>Error: admin.html file not found in directory!</h3>"
 
-# التعديل الهام هنا لتشغيل السيرفر تلقائياً على الاستضافة (Render)
+# تشغيل السيرفر تلقائياً على الاستضافة (Render)
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
     uvicorn.run("main:app", host="0.0.0.0", port=port)
