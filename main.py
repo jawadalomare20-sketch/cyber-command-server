@@ -33,8 +33,8 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 # حالة الصيانة العامة للسيرفر
 system_maintenance_mode = False
 
-# المفتاح السري الخاص بالأدمن (يمكنك تغييره إلى أي كلمة سر قوية تريدها)
-ADMIN_SECRET_KEY = "MY_SUPER_SECRET_KEY"
+# المفتاح السري الخاص بالأدمن (تم التعديل إلى مفتاحك الشخصي)
+ADMIN_SECRET_KEY = "jawad_secret_2026"
 
 class HackAttemptData(BaseModel):
     difficulty: Optional[str] = "easy"
