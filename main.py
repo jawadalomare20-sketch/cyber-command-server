@@ -46,6 +46,11 @@ class HackAttemptData(BaseModel):
 def startup_event():
     init_db()
 
+# مسار أساسي لكي يقرأه موقع المراقبة UptimeRobot ويعطيك اللون الأخضر
+@app.get("/")
+def read_root():
+    return {"status": "online", "game": "Cyber Command Server Active"}
+
 @app.post("/register")
 @limiter.limit("5/minute")
 def register_agent(request: Request, agent: AgentData):
