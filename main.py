@@ -33,7 +33,7 @@ app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 # حالة الصيانة العامة للسيرفر
 system_maintenance_mode = False
 
-# المفتاح السري الخاص بالأدمن (تم التعديل إلى مفتاحك الشخصي)
+# المفتاح السري الخاص بالأدمن
 ADMIN_SECRET_KEY = "jawad_secret_2026"
 
 class HackAttemptData(BaseModel):
@@ -46,8 +46,8 @@ class HackAttemptData(BaseModel):
 def startup_event():
     init_db()
 
-# مسار أساسي لكي يقرأه موقع المراقبة UptimeRobot ويعطيك اللون الأخضر
-@app.get("/")
+# مسار أساسي يدعم GET و HEAD لكي يقرأه موقع المراقبة UptimeRobot بدون أخطاء
+@app.api_route("/", methods=["GET", "HEAD"])
 def read_root():
     return {"status": "online", "game": "Cyber Command Server Active"}
 
